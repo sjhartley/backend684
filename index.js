@@ -199,6 +199,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //
 // });
 
+app.get("/test", (req, res) => {
+  res.send("test");
+});
+
 app.post("/api1", (req, res) => {
   console.log(req.body.keyWord);
   console.log("---------------------------------------");
