@@ -237,7 +237,7 @@ function nasdaq_get(keyWord, res){
     res.send(help_Str);
   }
   else if(keyWord.toLowerCase().search("market-info") !== -1){
-    options.url="https://api.nasdaq.com/api/market-info";
+    get_options.url="https://api.nasdaq.com/api/market-info";
     axios(get_options).then(function(response){
       var body=response.data;
       //console.log(body.data);
