@@ -298,7 +298,7 @@ app.get("/test", (req, res) => {
   res.send("test");
 });
 
-app.post("/nasdaq-market-info", (req, res) => {
+app.post("/nasdaq", (req, res) => {
   //res.send("hello world");
   nasdaq_get(req.body.keyWord, res);
 });
