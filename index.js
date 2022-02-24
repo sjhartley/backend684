@@ -56,6 +56,8 @@ function tag_remover(str){
   return str;
 }
 
+//NYSE API
+
 function nyse_get(keyWord, res){
 
   var url="https://www.nyse.com/api/quotes/filter";
@@ -190,6 +192,105 @@ function dataset_fetch(dataset, ticker, session_key, cbid){
   });
 }
 
+//NASDAQ API
+
+function nasdaq_get(keyWord, res){
+
+  console.log(keyWord);
+  if((keyWord !== "l") && (keyWord.search("--kw") !== -1)){
+    keyWord=command_stuff.command.split('--kw')[1].trim();
+    console.log(keyWord);
+  }
+
+  var msg_str="";
+  const url = 'https://api.nasdaq.com/api/quote/list-type/nasdaq100';
+
+
+  var options={
+    url: url,
+    proxy: {
+      host: 'localhost',
+      port: 3200
+    },
+  }
+
+  var signal_Dict = {
+    "+": 1,
+    "-": 0
+  };
+
+  var title_Str="Command guide for accessing NASDAQ100 data";
+  var help_Str = `${title_Str}\n${line_generator('-', title_Str.length-1)}\n\n
+  1. To display the components of NASDAQ100: "nasdaq_get --l"\n
+  2. To display data associated with a specific company: "nasdaq_get --kw(TICKER OR COMPANY Name)"\n
+  3. To display market info: "nasdaq_get --market-info"\n`;
+
+  if(keyWord.search('--l') !== -1){
+    console.log("listing!!!");
+    axios(options).then(function(response){
+      var body=response.data;
+      //console.log(body);
+      var date_str=`Time Stamp: ${body.data['date']}`;
+      var stock_recs=body.data.data.rows;
+      //console.log(stock_recs);
+      msg_str = msg_str + `Components of NASDAQ100\n${date_str}\n${line_generator('-', date_str.length-1)}\n\n`;
+      Object.keys(stock_recs).forEach(function(key) {
+        //console.log(key);
+        var companyName = stock_recs[key].companyName.toString();
+        var symbol = stock_recs[key].symbol.toUpperCase();
+        msg_str = msg_str + `Symbol: ${symbol}, Name: ${companyName}\n\n`;
+      });
+      console.log(msg_str);
+    }).catch(function(err){
+      console.log(err);
+    });
+  }
+  else if(keyWord.toLowerCase().search("help") !== -1){
+    console.log(help_Str);
+    res.send(help_Str);
+  }
+  else if(keyWord.toLowerCase().search("market-info") !== -1){
+    options.url="https://api.nasdaq.com/api/market-info";
+    axios(options).then(function(response){
+      var body=response.data;
+      //console.log(body.data);
+
+      var info_str="";
+      Object.keys(body.data).forEach(function(el, idx){
+          //console.log(`${el}: ${body.data[el]}`);
+          info_str=info_str+`${el}: ${body.data[el]}\n`
+      });
+      info_str=`${line_generator('*', 50)}\n\n${info_str}`;
+      console.log(info_str);
+      res.send(info_str);
+    })
+  }
+  else{
+    axios(options).then(function(response){
+      var body=response.data;
+      var date=body.data['date'];
+      var stock_recs=body.data.data.rows;
+      msg_str = msg_str + `Time Stamp: ${date}\n`;
+      Object.keys(stock_recs).forEach(function(key) {
+        var companyName = stock_recs[key].companyName.toString();
+        var symbol = stock_recs[key].symbol.toUpperCase();
+        if(((companyName.toLowerCase().search(keyWord.toLowerCase()) !== -1) || (symbol.toLowerCase().search(keyWord.toLowerCase()) !== -1)) && (typeof keyWord !== 'undefined')){
+
+          var marketCap = stock_recs[key].marketCap;
+          var last = stock_recs[key].lastSalePrice;
+          var netChange = stock_recs[key].netChange;
+          var percenChange = stock_recs[key].percentageChange;
+          msg_str=`${line_generator('*', 50)}\n\nSource: ${url}\n\nSymbol: ${symbol}\n\nName: ${companyName}\n\nMarket Cap: ${marketCap}\n\nLast sale price: ${last}\n\nNet change: ${netChange}\n\nPercentage change: ${percenChange}`;
+          console.log(msg_str);
+          var textObj={
+            text: msg_str
+          };
+          return false;
+        }
+      });
+    });
+  }
+}
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -210,7 +311,11 @@ app.get("/test", (req, res) => {
   res.send("test");
 });
 
-app.post("/api1", (req, res) => {
+app.get("/nasdaq-market-info", (req, res) => {
+  nasdaq_get(req.body.keyWord, res);
+});
+
+app.post("/nyse", (req, res) => {
   console.log(req.body.keyWord);
   console.log("---------------------------------------");
   console.log(`localhost:${port} api is running`);
