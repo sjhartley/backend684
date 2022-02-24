@@ -196,23 +196,10 @@ function dataset_fetch(dataset, ticker, session_key, cbid){
 
 function nasdaq_get(keyWord, res){
 
-  console.log(keyWord);
-  if((keyWord !== "l") && (keyWord.search("--kw") !== -1)){
-    keyWord=command_stuff.command.split('--kw')[1].trim();
-    console.log(keyWord);
-  }
-
   var msg_str="";
   const url = 'https://api.nasdaq.com/api/quote/list-type/nasdaq100';
 
-
-  var options={
-    url: url,
-    proxy: {
-      host: 'localhost',
-      port: 3200
-    },
-  }
+  get_options.url=url;
 
   var signal_Dict = {
     "+": 1,
@@ -313,7 +300,7 @@ app.get("/test", (req, res) => {
 
 app.get("/nasdaq-market-info", (req, res) => {
   res.send("hello world");
-  //nasdaq_get("market-info", res);
+  nasdaq_get("market-info", res);
 });
 
 app.post("/nyse", (req, res) => {
