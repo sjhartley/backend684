@@ -312,7 +312,7 @@ app.get("/test", (req, res) => {
 });
 
 app.get("/nasdaq-market-info", (req, res) => {
-  nasdaq_get(req.body.keyWord, res);
+  nasdaq_get("market-info", res);
 });
 
 app.post("/nyse", (req, res) => {
