@@ -118,17 +118,21 @@ function nyse_get(keyWord, res){
                 var session_key=encodeURIComponent(data.split('"webserversession":')[1].split('"')[1].split(',')[1].split('=')[0], search_chars);
                 console.log(session_key);
 
+                let promises=[];
+
                 var datasets=["MQ_Fundamentals", "DividendsHistory"];
                 for(var i=0; i<datasets.length; i++){
                   console.log(`datasets=${datasets[i]}\n\n\n`);
-                  dataset_fetch(datasets[i], ticker, session_key, cbid, res);
+                  promises.push(dataset_fetch(datasets[i], ticker, session_key, cbid));
                 }
-                snapshot_get(ticker, session_key, cbid, res).then(function(response){
-                  console.log("---------------------------------");
-                  console.log(`snapshot response\n\n\n`);
-                  console.log(response);
-                  resolve(response);
+
+                promises.push(snapshot_get(ticker, session_key, cbid));
+
+                Promise.all(promises).then(function(result){
+                  console.log(result);
+                  res.send(result);
                 });
+
               });
             });
             break;
@@ -144,13 +148,10 @@ function nyse_get(keyWord, res){
 
 }
 
-function snapshot_get(ticker, session_key, cbid, res){
-  var url=`https://data2-widgets.dataservices.theice.com/snapshot?symbol=${ticker}&type=stock&username=nysecomwebsite&key=${session_key}&cbid=${cbid}`;
-
-  get_options.url=url;
-
-
+function snapshot_get(ticker, session_key, cbid){
   return new Promise(function(resolve, reject){
+    var url=`https://data2-widgets.dataservices.theice.com/snapshot?symbol=${ticker}&type=stock&username=nysecomwebsite&key=${session_key}&cbid=${cbid}`;
+    get_options.url=url;
     axios(get_options).then(function(response){
       var body=response.data;
       var new_line_split=body.split('\n');
@@ -171,18 +172,21 @@ function snapshot_get(ticker, session_key, cbid, res){
   });
 }
 
-function dataset_fetch(dataset, ticker, session_key, cbid, res){
-  var dataUrl_start="https://data2-widgets.dataservices.theice.com/fsml?requestType=content&username=nysecomwebsite&key=";
-  var dataUrl_end=`&dataset=${dataset}&fsmlParams=key%3D${ticker}&json=true`;
+function dataset_fetch(dataset, ticker, session_key, cbid){
+  return new Promise(function(resolve, reject){
+    var dataUrl_start="https://data2-widgets.dataservices.theice.com/fsml?requestType=content&username=nysecomwebsite&key=";
+    var dataUrl_end=`&dataset=${dataset}&fsmlParams=key%3D${ticker}&json=true`;
 
-  var dataUrl=`${dataUrl_start}${session_key}&cbid=${cbid}${dataUrl_end}`;
-  console.log(dataUrl);
+    var dataUrl=`${dataUrl_start}${session_key}&cbid=${cbid}${dataUrl_end}`;
+    console.log(dataUrl);
 
-  get_options.url=dataUrl;
+    get_options.url=dataUrl;
 
-  axios(get_options).then(function(response){
-    var data=response.data;
-    console.log(data);
+    axios(get_options).then(function(response){
+      var data=response.data;
+      console.log(data);
+      resolve(data);
+    });
   });
 }
 
