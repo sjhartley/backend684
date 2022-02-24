@@ -298,28 +298,28 @@ app.get("/test", (req, res) => {
   res.send("test");
 });
 
-app.get("/nasdaq-market-info", (req, res) => {
+app.post("/nasdaq-market-info", (req, res) => {
   //res.send("hello world");
-  nasdaq_get("help", res);
+  nasdaq_get(req.body.keyWord, res);
 });
 
 app.post("/nyse", (req, res) => {
   console.log(req.body.keyWord);
-  console.log("---------------------------------------");
-  console.log(`localhost:${port} api is running`);
-  const data = {
-    result: `Success! from localhost on localhost:${port}!!`,
-  };
+  // console.log("---------------------------------------");
+  // console.log(`localhost:${port} api is running`);
+  // const data = {
+  //   result: `Success! from localhost on localhost:${port}!!`,
+  // };
   //res.send(data);
   // axios.get("https://www.nyse.com/api/idc/td").then(function(response){
   //   console.log(response.data);
   // })
-  nyse_get(req.body.keyWord, res).then(function(response){
-    console.log(`-------------------------------------\n`);
-    console.log(`nyse_get response\n\n`);
-    console.log(response);
-    res.send(response);
-  });
+  nyse_get(req.body.keyWord, res);//.then(function(response){
+  //   console.log(`-------------------------------------\n`);
+  //   console.log(`nyse_get response\n\n`);
+  //   console.log(response);
+  //   res.send(response);
+  // });
 
 });
 
