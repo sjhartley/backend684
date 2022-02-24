@@ -300,7 +300,7 @@ app.get("/test", (req, res) => {
 
 app.get("/nasdaq-market-info", (req, res) => {
   //res.send("hello world");
-  nasdaq_get("market-info", res);
+  nasdaq_get("help", res);
 });
 
 app.post("/nyse", (req, res) => {
