@@ -299,7 +299,7 @@ app.get("/test", (req, res) => {
 });
 
 app.get("/nasdaq-market-info", (req, res) => {
-  res.send("hello world");
+  //res.send("hello world");
   nasdaq_get("market-info", res);
 });
 
