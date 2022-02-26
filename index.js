@@ -199,7 +199,10 @@ function nasdaq_get(keyWord, res){
   var msg_str="";
   const url = 'https://api.nasdaq.com/api/quote/list-type/nasdaq100';
 
-  get_options.url=url;
+  let options={
+    url: url,
+    method: 'GET'
+  };
 
   var signal_Dict = {
     "+": 1,
@@ -237,8 +240,8 @@ function nasdaq_get(keyWord, res){
     res.send(help_Str);
   }
   else if(keyWord.toLowerCase().search("market-info") !== -1){
-    get_options.url="https://api.nasdaq.com/api/market-info";
-    axios(get_options).then(function(response){
+    options.url="https://api.nasdaq.com/api/market-info";
+    axios(options).then(function(response){
       var body=response.data;
       //console.log(body.data);
 
