@@ -240,21 +240,20 @@ function nasdaq_get(keyWord, res){
     res.send(help_Str);
   }
   else if(keyWord.toLowerCase().search("market-info") !== -1){
-    options.url="https://api.nasdaq.com/api/market-info";
-    // axios.(options).then(function(response){
-    //   var body=response.data;
-    //   //console.log(body.data);
-    //
-    //   var info_str="";
-    //   Object.keys(body.data).forEach(function(el, idx){
-    //       //console.log(`${el}: ${body.data[el]}`);
-    //       info_str=info_str+`${el}: ${body.data[el]}\n`
-    //   });
-    //   info_str=`${line_generator('*', 50)}\n\n${info_str}`;
-    //   console.log(info_str);
-    //   //res.send(info_str);
-    // })
-    res.send("logic working...");
+    axios.get("https://api.nasdaq.com/api/market-info").then(function(response){
+      var body=response.data;
+      //console.log(body.data);
+      res.send("body.data");
+      var info_str="";
+      Object.keys(body.data).forEach(function(el, idx){
+          //console.log(`${el}: ${body.data[el]}`);
+          info_str=info_str+`${el}: ${body.data[el]}\n`
+      });
+      info_str=`${line_generator('*', 50)}\n\n${info_str}`;
+      console.log(info_str);
+      //res.send(info_str);
+    })
+    // res.send("logic working...");
   }
   else{
     axios(options).then(function(response){
