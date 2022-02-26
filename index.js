@@ -303,7 +303,8 @@ app.get("/test", (req, res) => {
 
 app.post("/nasdaq", (req, res) => {
   console.log(req.body.keyWord);
-  nasdaq_get(req.body.keyWord, res);
+  res.send(req.body.keyWord);
+  //nasdaq_get(req.body.keyWord, res);
 });
 
 app.post("/nyse", (req, res) => {
