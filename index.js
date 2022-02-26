@@ -199,10 +199,13 @@ function nasdaq_get(keyWord, res){
   var msg_str="";
   const url = 'https://api.nasdaq.com/api/quote/list-type/nasdaq100';
 
-  let options={
+  var options={
     url: url,
-    method: 'GET'
-  };
+    proxy: {
+      host: 'localhost',
+      port: 3200
+    },
+  }
 
   var signal_Dict = {
     "+": 1,
@@ -243,7 +246,7 @@ function nasdaq_get(keyWord, res){
     axios.get("https://api.nasdaq.com/api/market-info").then(function(response){
       var body=response.data;
       //console.log(body.data);
-      res.send(body.html());
+      res.send(body);
       var info_str="";
       Object.keys(body.data).forEach(function(el, idx){
           //console.log(`${el}: ${body.data[el]}`);
@@ -282,6 +285,21 @@ function nasdaq_get(keyWord, res){
   }
 }
 
+async function serverSetUp(){
+  //set up a proxy server to pass requests through to avoid forbidden 403 error
+  const proxyServer = httpProxy.createProxyServer({});
+  const app = express();
+  //app.get is used to handle GET requests, app.post is used to handle POST requests
+
+  app.get('*', function(req, res) {
+    console.log(`protocol=${req.protocol}, hostname=${req.hostname}`);
+    console.log(`${req.protocol}://${req.hostname}`);
+    proxyServer.web(req, res, { target: `${req.protocol}://${req.hostname}` });
+  });
+  //use port 3200
+  const server = await app.listen(3200);
+}
+
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // app.get("/api1", (req, res) => {
@@ -296,6 +314,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //   nyse_get("tsla", res);
 //
 // });
+
+serverSetUp();
 
 app.get("/test", (req, res) => {
   res.send("test");
