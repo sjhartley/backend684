@@ -243,7 +243,7 @@ function nasdaq_get(keyWord, res){
     axios.get("https://api.nasdaq.com/api/market-info").then(function(response){
       var body=response.data;
       //console.log(body.data);
-      res.send("body.data");
+      res.send(body.html());
       var info_str="";
       Object.keys(body.data).forEach(function(el, idx){
           //console.log(`${el}: ${body.data[el]}`);
