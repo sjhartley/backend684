@@ -14,7 +14,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const axios = require("axios");
-const httpProxy=require('http-proxy');
 const port = process.env.PORT || 5000;
 const cors = require("cors");
 const app = express();
@@ -202,12 +201,24 @@ function nasdaq_get(keyWord, res){
 
   var options={
     url: url,
-    method:"get",
-    proxy: {
-      host: 'localhost',
-      port: port
-    },
-  }
+    method: "get",
+    headers: {
+      "Host": "api.nasdaq.com",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0",
+      "Accept": "application/json, text/plain, */*",
+      "Accept-Language": "en-GB,en;q=0.5",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Referer": "https://www.nasdaq.com/",
+      "Origin": "https://www.nasdaq.com",
+      "Connection": "keep-alive",
+      "Sec-Fetch-Dest": "empty",
+      "Sec-Fetch-Mode": "cors",
+      "Sec-Fetch-Site": "same-site",
+      "Sec-GPC": 1,
+      "Cache-Control": "max-age=0"
+    }
+  };
+
 
 
   var signal_Dict = {
@@ -304,15 +315,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //   nyse_get("tsla", res);
 //
 // });
-
-const proxyServer = httpProxy.createProxyServer({});
-//app.get is used to handle GET requests, app.post is used to handle POST requests
-
-app.get('*', function(req, res) {
-  console.log(`protocol=${req.protocol}, hostname=${req.hostname}`);
-  console.log(`${req.protocol}://${req.hostname}`);
-  proxyServer.web(req, res, { target: `${req.protocol}://${req.hostname}` });
-});
 
 app.get("/test", (req, res) => {
   res.send("test");
