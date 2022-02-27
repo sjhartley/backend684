@@ -202,11 +202,13 @@ function nasdaq_get(keyWord, res){
 
   var options={
     url: url,
+    method:"get",
     proxy: {
       host: 'localhost',
       port: port
     },
   }
+
 
   var signal_Dict = {
     "+": 1,
