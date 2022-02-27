@@ -204,7 +204,7 @@ function nasdaq_get(keyWord, res){
     url: url,
     proxy: {
       host: 'localhost',
-      port: 3200
+      port: port
     },
   }
 
@@ -245,7 +245,7 @@ function nasdaq_get(keyWord, res){
   }
   else if(keyWord.toLowerCase().search("market-info") !== -1){
     options.url="https://api.nasdaq.com/api/market-info";
-    axios.get("https://api.nasdaq.com/api/market-info").then(function(response){
+    axios(options).then(function(response){
       var body=response.data;
       //console.log(body.data);
 
@@ -288,21 +288,6 @@ function nasdaq_get(keyWord, res){
   }
 }
 
-async function serverSetUp(){
-  //set up a proxy server to pass requests through to avoid forbidden 403 error
-  const proxyServer = httpProxy.createProxyServer({});
-  const app = express();
-  //app.get is used to handle GET requests, app.post is used to handle POST requests
-
-  app.get('*', function(req, res) {
-    console.log(`protocol=${req.protocol}, hostname=${req.hostname}`);
-    console.log(`${req.protocol}://${req.hostname}`);
-    proxyServer.web(req, res, { target: `${req.protocol}://${req.hostname}` });
-  });
-  //use port 3200
-  const server = await app.listen(3200);
-}
-
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // app.get("/api1", (req, res) => {
@@ -318,7 +303,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //
 // });
 
-serverSetUp();
+const proxyServer = httpProxy.createProxyServer({});
+//app.get is used to handle GET requests, app.post is used to handle POST requests
+
+app.get('*', function(req, res) {
+  console.log(`protocol=${req.protocol}, hostname=${req.hostname}`);
+  console.log(`${req.protocol}://${req.hostname}`);
+  proxyServer.web(req, res, { target: `${req.protocol}://${req.hostname}` });
+});
 
 app.get("/test", (req, res) => {
   res.send("test");
@@ -336,5 +328,5 @@ app.post("/nyse", (req, res) => {
 });
 
 app.listen(port, function () {
-  console.log(`server running now.. ${port}`);
+  console.log(`server running at port: ${port}`);
 });
