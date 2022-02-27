@@ -269,10 +269,8 @@ function nasdaq_get(keyWord, res){
       });
       info_str=`${line_generator('*', 50)}\n\n${info_str}`;
       console.log(info_str);
-      res.send("it is working...");
-      //res.send(info_str);
+      res.send(info_str);
     })
-    // res.send("logic working...");
   }
   else{
     axios(options).then(function(response){
@@ -291,9 +289,7 @@ function nasdaq_get(keyWord, res){
           var percenChange = stock_recs[key].percentageChange;
           msg_str=`${line_generator('*', 50)}\n\nSource: ${url}\n\nSymbol: ${symbol}\n\nName: ${companyName}\n\nMarket Cap: ${marketCap}\n\nLast sale price: ${last}\n\nNet change: ${netChange}\n\nPercentage change: ${percenChange}`;
           console.log(msg_str);
-          var textObj={
-            text: msg_str
-          };
+          res.send(msg_str);
           return false;
         }
       });
