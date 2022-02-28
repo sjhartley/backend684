@@ -304,10 +304,11 @@ function nasdaq_get(keyWord, res){
           dataObj["last"]=last;
           dataObj["netChange"]=netChange;
           dataObj["percenChange"]=percenChange;
+          arr.push(dataObj);
 
           msg_str=`${line_generator('*', 50)}\n\nSource: ${url}\n\nSymbol: ${symbol}\n\nName: ${companyName}\n\nMarket Cap: ${marketCap}\n\nLast sale price: ${last}\n\nNet change: ${netChange}\n\nPercentage change: ${percenChange}`;
           console.log(msg_str);
-          res.send(dataObj);
+          res.send(arr);
           return false;
         }
       });
