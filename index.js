@@ -196,7 +196,7 @@ function dataset_fetch(dataset, ticker, session_key, cbid){
 
 function nasdaq_get(keyWord, res){
 
-  var msg_str="";
+  var msg_str=""
   const url = 'https://api.nasdaq.com/api/quote/list-type/nasdaq100';
 
   var options={
@@ -235,6 +235,7 @@ function nasdaq_get(keyWord, res){
   if(keyWord.search('--l') !== -1){
     console.log("listing!!!");
     axios(options).then(function(response){
+      let arr=[];
       var body=response.data;
       //console.log(body);
       var date_str=`Time Stamp: ${body.data['date']}`;
@@ -243,10 +244,16 @@ function nasdaq_get(keyWord, res){
       msg_str = msg_str + `Components of NASDAQ100\n${date_str}\n${line_generator('-', date_str.length-1)}\n\n`;
       Object.keys(stock_recs).forEach(function(key) {
         //console.log(key);
+        let dataObj=new Object();
+
         var companyName = stock_recs[key].companyName.toString();
         var symbol = stock_recs[key].symbol.toUpperCase();
         msg_str = msg_str + `Symbol: ${symbol}, Name: ${companyName}\n\n`;
+        dataObj["Symbol"]=symbol;
+        dataObj["Company Name"]=companyName;
+        arr.push(dataObj)
       });
+      res.send(arr);
       console.log(msg_str);
     }).catch(function(err){
       console.log(err);
