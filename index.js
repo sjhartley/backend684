@@ -267,7 +267,7 @@ function nasdaq_get(keyWord, res){
       Object.keys(body.data).forEach(function(el, idx){
           //console.log(`${el}: ${body.data[el]}`);
           info_str=info_str+`${el}: ${body.data[el]}\n`
-          let dataObj=new Object();
+          var dataObj=new Object();
           dataObj[el] = body.data[el];
           arr.push(dataObj);
       });
@@ -284,6 +284,8 @@ function nasdaq_get(keyWord, res){
       var date=body.data['date'];
       var stock_recs=body.data.data.rows;
       msg_str = msg_str + `Time Stamp: ${date}\n`;
+      let arr=[];
+
       Object.keys(stock_recs).forEach(function(key) {
         var companyName = stock_recs[key].companyName.toString();
         var symbol = stock_recs[key].symbol.toUpperCase();
@@ -293,9 +295,19 @@ function nasdaq_get(keyWord, res){
           var last = stock_recs[key].lastSalePrice;
           var netChange = stock_recs[key].netChange;
           var percenChange = stock_recs[key].percentageChange;
+
+          let dataObj=new Object();
+          dataObj["Time Stamp"]=date;
+          dataObj["Company Name"]=companyName;
+          dataObj["symbol"]=symbol;
+          dataObj["marketCap"]=marketCap;
+          dataObj["last"]=last;
+          dataObj["netChange"]=netChange;
+          dataObj["percenChange"]=percenChange;
+
           msg_str=`${line_generator('*', 50)}\n\nSource: ${url}\n\nSymbol: ${symbol}\n\nName: ${companyName}\n\nMarket Cap: ${marketCap}\n\nLast sale price: ${last}\n\nNet change: ${netChange}\n\nPercentage change: ${percenChange}`;
           console.log(msg_str);
-          res.send(msg_str);
+          res.send(dataObj);
           return false;
         }
       });
