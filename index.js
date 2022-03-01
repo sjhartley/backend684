@@ -227,10 +227,10 @@ function nasdaq_get(keyWord, res){
   };
 
   var title_Str="Command guide for accessing NASDAQ100 data";
-  var help_Str = `${title_Str}\n${line_generator('-', title_Str.length-1)}\n\n
-  1. To display the components of NASDAQ100: "nasdaq_get --l"\n
-  2. To display data associated with a specific company: "nasdaq_get --kw(TICKER OR COMPANY Name)"\n
-  3. To display market info: "nasdaq_get --market-info"\n`;
+  var help_Str = `${title_Str}\n${line_generator('-', title_Str.length-1)}<br><br>
+  1. To display the components of NASDAQ100: "nasdaq_get --l"<br>
+  2. To display data associated with a specific company: "nasdaq_get --kw(TICKER OR COMPANY Name)"<br>
+  3. To display market info: "nasdaq_get --market-info"<br>`;
 
   if(keyWord.search('--l') !== -1){
     console.log("listing!!!");
