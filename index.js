@@ -227,7 +227,7 @@ function nasdaq_get(keyWord, res){
   };
 
   var title_Str="Command guide for accessing NASDAQ100 data";
-  var help_Str = `${title_Str}\n${line_generator('-', title_Str.length-1)}<br><br>
+  var help_Str = `${title_Str}<br>${line_generator('-', title_Str.length-1)}<br><br>
   1. To display the components of NASDAQ100: "nasdaq_get --l"<br>
   2. To display data associated with a specific company: "nasdaq_get --kw(TICKER OR COMPANY Name)"<br>
   3. To display market info: "nasdaq_get --market-info"<br>`;
