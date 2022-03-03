@@ -248,6 +248,8 @@ function nasdaq_get(keyWord, res){
 
         var companyName = stock_recs[key].companyName.toString();
         var symbol = stock_recs[key].symbol.toUpperCase();
+        var last = stock_recs[key].lastSalePrice;
+        
         msg_str = msg_str + `Symbol: ${symbol}, Name: ${companyName}\n\n`;
         dataObj["Symbol"]=symbol;
         dataObj["Company Name"]=companyName;
