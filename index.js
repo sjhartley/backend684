@@ -232,7 +232,7 @@ function nasdaq_get(keyWord, res){
   2. To display data associated with a specific company: "nasdaq_get --kw(TICKER OR COMPANY Name)"<br>
   3. To display market info: "nasdaq_get --market-info"<br>`;
 
-  if(keyWord.search('--l') !== -1){
+  if((keyWord.search('--l') !== -1) || (keyWord.search('--all') !== -1)){
     console.log("listing!!!");
     axios(options).then(function(response){
       let arr=[];
@@ -251,6 +251,9 @@ function nasdaq_get(keyWord, res){
         msg_str = msg_str + `Symbol: ${symbol}, Name: ${companyName}\n\n`;
         dataObj["Symbol"]=symbol;
         dataObj["Company Name"]=companyName;
+        if(keyWord.search('--all') !== -1){
+            dataObj["last"]=last;
+        }
         arr.push(dataObj)
       });
       res.send(arr);
