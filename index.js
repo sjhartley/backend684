@@ -146,10 +146,11 @@ function nyse_get(keyWord, res){
             let dataObj=new Object();
             dataobj[""]
             if(keyWord.search("--all")){
-              list.push({"ticker": data[i]["symbolTicker"], "last": data[i]["last"]});
-              if(i === data.length - 1){
-                res.send(list);
-              }
+              res.send("--all");
+              // list.push({"ticker": data[i]["symbolTicker"], "last": data[i]["last"]});
+              // if(i === data.length - 1){
+              //   res.send(list);
+              // }
             }
           }
         }
