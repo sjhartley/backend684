@@ -145,7 +145,7 @@ function nyse_get(keyWord, res){
             console.log(`${data[i]["instrumentName"]}`);
             let dataObj=new Object();
             //dataobj[""]
-            if(keyWord.search("--all")){
+            if(keyWord.search("--all") !== -1){
               res.send("--all");
               // list.push({"ticker": data[i]["symbolTicker"], "last": data[i]["last"]});
               // if(i === data.length - 1){
