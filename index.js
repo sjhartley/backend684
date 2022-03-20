@@ -79,6 +79,7 @@ function nyse_get(keyWord, res){
       post_options.data=payload;
       axios(post_options).then(function(response){
         var data=response.data;
+        var list=[];
         for(var i=0; i<data.length; i++){
           //if the keyword entered by the user matches the company name or ticker
           if((data[i]["instrumentName"].toLowerCase().search(keyWord.toLowerCase()) !== -1) || (data[i]["symbolTicker"].toLowerCase().search(keyWord.toLowerCase()) !== -1)){
@@ -139,9 +140,17 @@ function nyse_get(keyWord, res){
             });
             break;
           }
-          else if(keyWord.search("--l") !== -1){
+          else if((keyWord.search("--l") !== -1) && (keyWord.search("--all") !== -1)){
             console.log(i);
             console.log(`${data[i]["instrumentName"]}`);
+            let dataObj=new Object();
+            dataobj[""]
+            if(keyWord.search("--all")){
+              list.push({"ticker": data[i]["symbolTicker"], "last": data[i]["last"]});
+              if(i === data.length - 1){
+                res.send(list);
+              }
+            }
           }
         }
       });
@@ -249,7 +258,7 @@ function nasdaq_get(keyWord, res){
         var companyName = stock_recs[key].companyName.toString();
         var symbol = stock_recs[key].symbol.toUpperCase();
         var last = stock_recs[key].lastSalePrice;
-        
+
         msg_str = msg_str + `Symbol: ${symbol}, Name: ${companyName}\n\n`;
         dataObj["Symbol"]=symbol;
         dataObj["Company Name"]=companyName;
