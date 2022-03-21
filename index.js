@@ -187,7 +187,10 @@ function snapshot_get(ticker, session_key, cbid){
       console.log(data_arr);
       //res.send(data_arr);
       resolve(data_arr);
-    });
+    }).catch(function(err){
+      res.send("CANNOT ACCESS DATA AT THIS TIME");
+      return false;
+    });;
 
   });
 }
@@ -206,7 +209,10 @@ function dataset_fetch(dataset, ticker, session_key, cbid){
       var data=response.data;
       console.log(data);
       resolve(data);
-    });
+    }).catch(function(err){
+      //res.send("CANNOT ACCESS DATA AT THIS TIME");
+      return false;
+    });;
   });
 }
 
