@@ -136,8 +136,14 @@ function nyse_get(keyWord, res){
                   res.send(result);
                 });
 
-              });
-            });
+              }).catch(function(err){
+                res.send("CANNOT ACCESS DATA AT THIS TIME");
+                return false;
+              });;
+            }).catch(function(err){
+              res.send("CANNOT ACCESS DATA AT THIS TIME");
+              return false;
+            });;
             break;
           }
           else if((keyWord.search("--l") !== -1) && (keyWord.search("--all") !== -1)){
