@@ -145,16 +145,18 @@ function nyse_get(keyWord, res){
             console.log(`${data[i]["instrumentName"]}`);
             let dataObj=new Object();
             //dataobj[""]
-            if(keyWord.search("--all") !== -1){
-              res.send("--all");
+            //if(keyWord.search("--all") !== -1){
+              //res.send("--all");
               // list.push({"ticker": data[i]["symbolTicker"], "last": data[i]["last"]});
               // if(i === data.length - 1){
               //   res.send(list);
               // }
-            }
+            //}
           }
         }
       });
+    }).catch(function(err){
+      res.send("CANNOT ACCESS DATA AT THIS TIME");
     });
   });
 
