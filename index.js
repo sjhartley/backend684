@@ -317,37 +317,47 @@ function nasdaq_get(keyWord, res){
   else{
     axios(options).then(function(response){
       var body=response.data;
-      var date=body.data['date'];
-      var stock_recs=body.data.data.rows;
-      msg_str = msg_str + `Time Stamp: ${date}\n`;
-      let arr=[];
+      if(typeof body.data !== "undefined"){
 
-      Object.keys(stock_recs).forEach(function(key) {
-        var companyName = stock_recs[key].companyName.toString();
-        var symbol = stock_recs[key].symbol.toUpperCase();
-        if(((companyName.toLowerCase().search(keyWord.toLowerCase()) !== -1) || (symbol.toLowerCase().search(keyWord.toLowerCase()) !== -1)) && (typeof keyWord !== 'undefined')){
 
-          var marketCap = stock_recs[key].marketCap;
-          var last = stock_recs[key].lastSalePrice;
-          var netChange = stock_recs[key].netChange;
-          var percenChange = stock_recs[key].percentageChange;
+        var date=body.data['date'];
+        var stock_recs=body.data.data.rows;
+        msg_str = msg_str + `Time Stamp: ${date}\n`;
+        let arr=[];
 
-          let dataObj=new Object();
-          dataObj["Time Stamp"]=date;
-          dataObj["Company Name"]=companyName;
-          dataObj["symbol"]=symbol;
-          dataObj["marketCap"]=marketCap;
-          dataObj["last"]=last;
-          dataObj["netChange"]=netChange;
-          dataObj["percenChange"]=percenChange;
-          arr.push(dataObj);
+        Object.keys(stock_recs).forEach(function(key) {
+          var companyName = stock_recs[key].companyName.toString();
+          var symbol = stock_recs[key].symbol.toUpperCase();
+          if(((companyName.toLowerCase().search(keyWord.toLowerCase()) !== -1) || (symbol.toLowerCase().search(keyWord.toLowerCase()) !== -1)) && (typeof keyWord !== 'undefined')){
 
-          msg_str=`${line_generator('*', 50)}\n\nSource: ${url}\n\nSymbol: ${symbol}\n\nName: ${companyName}\n\nMarket Cap: ${marketCap}\n\nLast sale price: ${last}\n\nNet change: ${netChange}\n\nPercentage change: ${percenChange}`;
-          console.log(msg_str);
-          res.send(arr);
-          return false;
-        }
-      });
+            var marketCap = stock_recs[key].marketCap;
+            var last = stock_recs[key].lastSalePrice;
+            var netChange = stock_recs[key].netChange;
+            var percenChange = stock_recs[key].percentageChange;
+
+            let dataObj=new Object();
+            dataObj["Time Stamp"]=date;
+            dataObj["Company Name"]=companyName;
+            dataObj["symbol"]=symbol;
+            dataObj["marketCap"]=marketCap;
+            dataObj["last"]=last;
+            dataObj["netChange"]=netChange;
+            dataObj["percenChange"]=percenChange;
+            arr.push(dataObj);
+
+            msg_str=`${line_generator('*', 50)}\n\nSource: ${url}\n\nSymbol: ${symbol}\n\nName: ${companyName}\n\nMarket Cap: ${marketCap}\n\nLast sale price: ${last}\n\nNet change: ${netChange}\n\nPercentage change: ${percenChange}`;
+            console.log(msg_str);
+            res.send(arr);
+            return false;
+          }
+        });
+      }
+      else{
+        res.send({error: "Could not retrieve data"});
+        return false;
+      }
+    }).catch(function(err){
+      console.log(`Error: ${err}`);
     });
   }
 }
