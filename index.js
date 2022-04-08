@@ -84,14 +84,15 @@ function nyse_get(keyWord, res){
           //if the keyword entered by the user matches the company name or ticker
 
           var ticker="";
-          //ticker search first
           let tickerSearch=data[i]["symbolTicker"].toLowerCase().search(keyWord.toLowerCase());
           let nameSearch=data[i]["instrumentName"].toLowerCase().search(keyWord.toLowerCase());
+
+          //search for ticker first
           if(tickerSearch !== -1){
             ticker=data[i]["symbolTicker"];
           }
           else if(nameSearch !== -1){
-            ticker=data[i]["instrumentName"];
+            ticker=data[i]["symbolTicker"];
           }
 
           if((tickerSearch !== -1) || (nameSearch !== -1)){
