@@ -176,17 +176,26 @@ function snapshot_get(ticker, session_key, cbid){
       var body=response.data;
       var new_line_split=body.split('\n');
 
+      // var data_arr=[];
+      // for(var i=0; i<new_line_split.length; i++){
+      //   if(new_line_split[i].search("=") !== -1){
+      //     var dataObj=new Object();
+      //     dataObj[new_line_split[i].split('=')[0]]=new_line_split[i].split('=')[1];
+      //     data_arr.push(dataObj);
+      //   }
+      // }
       var data_arr=[];
+      var dataObj=new Object();
       for(var i=0; i<new_line_split.length; i++){
         if(new_line_split[i].search("=") !== -1){
-          var dataObj=new Object();
+          //var dataObj=new Object();
           dataObj[new_line_split[i].split('=')[0]]=new_line_split[i].split('=')[1];
-          data_arr.push(dataObj);
+          //data_arr.push(dataObj);
         }
       }
-      console.log(data_arr);
+      console.log(dataObj);
       //res.send(data_arr);
-      resolve(data_arr);
+      resolve(dataObj);
     }).catch(function(err){
       res.send("CANNOT ACCESS DATA AT THIS TIME");
       return false;
