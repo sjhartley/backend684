@@ -82,9 +82,21 @@ function nyse_get(keyWord, res){
         var list=[];
         for(var i=0; i<data.length; i++){
           //if the keyword entered by the user matches the company name or ticker
-          if((data[i]["instrumentName"].toLowerCase().search(keyWord.toLowerCase()) !== -1) || (data[i]["symbolTicker"].toLowerCase().search(keyWord.toLowerCase()) !== -1)){
+
+          var ticker="";
+          //ticker search first
+          let tickerSearch=data[i]["symbolTicker"].toLowerCase().search(keyWord.toLowerCase());
+          let nameSearch=data[i]["instrumentName"].toLowerCase().search(keyWord.toLowerCase());
+          if(tickerSearch !== -1){
+            ticker=data[i]["symbolTicker"];
+          }
+          else if(nameSearch !== -1){
+            ticker=data[i]["instrumentName"];
+          }
+
+          if((tickerSearch !== -1) || (nameSearch !== -1)){
             console.log(data[i]);
-            const ticker=data[i]["symbolTicker"];
+            //const ticker=data[i]["symbolTicker"];
 
             //this url is used to obtain the authentication key
             var td_url="https://www.nyse.com/api/idc/td";
