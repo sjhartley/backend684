@@ -387,7 +387,7 @@ function nasdaq_get(keyWord, res){
         });
       }
       else{
-        res.send({error: "Could not retrieve data"});
+        res.send(false);
         return false;
       }
     }).catch(function(err){
