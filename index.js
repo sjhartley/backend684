@@ -275,34 +275,36 @@ function nasdaq_get(keyWord, res){
     axios(options).then(function(response){
       let arr=[];
       var body=response.data;
-      //console.log(body);
-      console.log("\n\n\n-------------");
-      console.log(typeof response.data);
-      console.log(response.data);
-      console.log("-------------\n\n\n");
 
-      var date_str=`Time Stamp: ${body.data['date']}`;
-      var stock_recs=body.data.data.rows;
-      //console.log(stock_recs);
-      msg_str = msg_str + `Components of NASDAQ100\n${date_str}\n${line_generator('-', date_str.length-1)}\n\n`;
-      Object.keys(stock_recs).forEach(function(key) {
-        //console.log(key);
-        let dataObj=new Object();
+      if((typeof body.data !== 'undefined') || (body.data !== null)){
 
-        var companyName = stock_recs[key].companyName.toString();
-        var symbol = stock_recs[key].symbol.toUpperCase();
-        var last = stock_recs[key].lastSalePrice;
+        var date_str=`Time Stamp: ${body.data['date']}`;
+        var stock_recs=body.data.data.rows;
+        //console.log(stock_recs);
+        msg_str = msg_str + `Components of NASDAQ100\n${date_str}\n${line_generator('-', date_str.length-1)}\n\n`;
+        Object.keys(stock_recs).forEach(function(key) {
+          //console.log(key);
+          let dataObj=new Object();
 
-        msg_str = msg_str + `Symbol: ${symbol}, Name: ${companyName}\n\n`;
-        dataObj["Symbol"]=symbol;
-        dataObj["Company Name"]=companyName;
-        if(keyWord.search('--all') !== -1){
-            dataObj["last"]=last;
-        }
-        arr.push(dataObj)
-      });
-      res.send(arr);
-      console.log(msg_str);
+          var companyName = stock_recs[key].companyName.toString();
+          var symbol = stock_recs[key].symbol.toUpperCase();
+          var last = stock_recs[key].lastSalePrice;
+
+          msg_str = msg_str + `Symbol: ${symbol}, Name: ${companyName}\n\n`;
+          dataObj["Symbol"]=symbol;
+          dataObj["Company Name"]=companyName;
+          if(keyWord.search('--all') !== -1){
+              dataObj["last"]=last;
+          }
+          arr.push(dataObj)
+        });
+        res.send(arr);
+        console.log(msg_str);
+      }
+      else{
+        res.send(false);
+        return false;
+      }
     }).catch(function(err){
       console.log(err);
       res.send(false);
@@ -344,12 +346,8 @@ function nasdaq_get(keyWord, res){
   else{
     axios(options).then(function(response){
       var body=response.data;
-      if(typeof body.data !== "undefined"){
+      if((typeof body.data !== "undefined") || (body.data !== null)){
 
-        console.log("\n\n\n");
-        console.log(typeof body.data);
-        console.log(body.data);
-        console.log("\n\n\n");
         var date=body.data['date'];
         var stock_recs=body.data.data.rows;
         msg_str = msg_str + `Time Stamp: ${date}\n`;
