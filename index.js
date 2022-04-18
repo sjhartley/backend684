@@ -346,7 +346,10 @@ function nasdaq_get(keyWord, res){
       var body=response.data;
       if(typeof body.data !== "undefined"){
 
-
+        console.log("\n\n\n");
+        console.log(typeof body.data);
+        console.log(body.data);
+        console.log("\n\n\n");
         var date=body.data['date'];
         var stock_recs=body.data.data.rows;
         msg_str = msg_str + `Time Stamp: ${date}\n`;
