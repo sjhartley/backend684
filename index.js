@@ -312,20 +312,26 @@ function nasdaq_get(keyWord, res){
       var body=response.data;
       //console.log(body.data);
 
-      var info_str="";
-      let arr=[];
-      Object.keys(body.data).forEach(function(el, idx){
-          //console.log(`${el}: ${body.data[el]}`);
-          info_str=info_str+`${el}: ${body.data[el]}\n`
-          var dataObj=new Object();
-          dataObj[el] = body.data[el];
-          arr.push(dataObj);
-      });
-      console.log(arr);
-      res.send(arr);
+      //var info_str="";
+      //let arr=[];
+
+      // Object.keys(body.data).forEach(function(el, idx){
+      //     //console.log(`${el}: ${body.data[el]}`);
+      //     info_str=info_str+`${el}: ${body.data[el]}\n`
+      //     var dataObj=new Object();
+      //     dataObj[el] = body.data[el];
+      //     arr.push(dataObj);
+      // });
+      // console.log(arr);
+      // res.send(arr);
+
+      res.send(body);
+
       //info_str=`${line_generator('*', 50)}\n\n${info_str}`;
       //console.log(info_str);
       //res.send(info_str);
+    }).catch(function(err){
+      console.log(`Error: ${err}`);
     })
   }
   else{
