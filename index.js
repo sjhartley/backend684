@@ -276,7 +276,7 @@ function nasdaq_get(keyWord, res){
       let arr=[];
       var body=response.data;
 
-      if((typeof body.data !== 'undefined') || (body.data !== null)){
+      if((typeof body.data !== 'undefined') && (body.data !== null)){
 
         console.log("\n\n\n");
         console.log(typeof body.data);
@@ -352,7 +352,7 @@ function nasdaq_get(keyWord, res){
   else{
     axios(options).then(function(response){
       var body=response.data;
-      if((typeof body.data !== "undefined") || (body.data !== null)){
+      if((typeof body.data !== "undefined") && (body.data !== null)){
 
         var date=body.data['date'];
         var stock_recs=body.data.data.rows;
