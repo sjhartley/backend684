@@ -278,6 +278,12 @@ function nasdaq_get(keyWord, res){
 
       if((typeof body.data !== 'undefined') || (body.data !== null)){
 
+        console.log("\n\n\n");
+        console.log(typeof body.data);
+        console.log("\n");
+        console.log(body.data);
+        console.log("\n\n\n");
+
         var date_str=`Time Stamp: ${body.data['date']}`;
         var stock_recs=body.data.data.rows;
         //console.log(stock_recs);
