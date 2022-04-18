@@ -276,6 +276,11 @@ function nasdaq_get(keyWord, res){
       let arr=[];
       var body=response.data;
       //console.log(body);
+      console.log("\n\n\n-------------");
+      console.log(typeof response.data);
+      console.log(response.data);
+      console.log("-------------\n\n\n");
+
       var date_str=`Time Stamp: ${body.data['date']}`;
       var stock_recs=body.data.data.rows;
       //console.log(stock_recs);
@@ -300,6 +305,7 @@ function nasdaq_get(keyWord, res){
       console.log(msg_str);
     }).catch(function(err){
       console.log(err);
+      res.send(false);
     });
   }
   else if(keyWord.toLowerCase().search("help") !== -1){
@@ -332,6 +338,7 @@ function nasdaq_get(keyWord, res){
       //res.send(info_str);
     }).catch(function(err){
       console.log(`Error: ${err}`);
+      res.send(false);
     })
   }
   else{
