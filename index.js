@@ -58,11 +58,7 @@ function tag_remover(str){
 
 //NYSE API
 
-function nyse_get(params, res){
-
-  console.log("params...");
-  console.log(params);
-  let keyWord=params.keyWord;
+function nyse_get(keyWord, res){
 
   var url="https://www.nyse.com/api/quotes/filter";
   var payload={"instrumentType":"EQUITY","pageNumber":1,"sortColumn":"NORMALIZED_TICKER","sortOrder":"ASC","maxResultsPerPage":10,"filterToken":""};
