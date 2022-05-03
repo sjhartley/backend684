@@ -64,7 +64,6 @@ function nyse_get(keyWord, res){
   var payload={"instrumentType":"EQUITY","pageNumber":1,"sortColumn":"NORMALIZED_TICKER","sortOrder":"ASC","maxResultsPerPage":10,"filterToken":""};
   post_options.url=url;
   post_options.data=payload;
-
   return new Promise(function(resolve, reject){
     axios(post_options).then(function(response){
       var data=response.data;
