@@ -58,7 +58,11 @@ function tag_remover(str){
 
 //NYSE API
 
-function nyse_get(keyWord, res){
+function nyse_get(params, res){
+
+  console.log(params);
+  let keyWord=params.keyWord;
+  let mode=params.mode;
 
   var url="https://www.nyse.com/api/quotes/filter";
   var payload={"instrumentType":"EQUITY","pageNumber":1,"sortColumn":"NORMALIZED_TICKER","sortOrder":"ASC","maxResultsPerPage":10,"filterToken":""};
@@ -82,11 +86,27 @@ function nyse_get(keyWord, res){
         for(var i=0; i<data.length; i++){
           //if the keyword entered by the user matches the company name or ticker
 
+          let search=-1;
           let tickerSearch=data[i]["symbolTicker"].toLowerCase().search(keyWord.toLowerCase());
           let nameSearch=data[i]["instrumentName"].toLowerCase().search(keyWord.toLowerCase());
 
+          if(mode === "ticker"){
+            search=tickerSearch;
+          }
+          else if(mode === "name"){
+            search=nameSearch;
+          }
+          else if(mode === "both"){
+            if(tickerSearch !== -1){
+              search=tickerSearch;
+            }
+            else if(nameSearch !== -1){
+              search=nameSearch;
+            }
+          }
 
-          if((tickerSearch !== -1) || (nameSearch !== -1)){
+
+          if(search !== -1){
             console.log(data[i]);
             const ticker=data[i]["symbolTicker"];
 
@@ -143,11 +163,11 @@ function nyse_get(keyWord, res){
               }).catch(function(err){
                 res.send("CANNOT ACCESS DATA AT THIS TIME");
                 return false;
-              });;
+              });
             }).catch(function(err){
               res.send("CANNOT ACCESS DATA AT THIS TIME");
               return false;
-            });;
+            });
             break;
           }
           else if((keyWord.search("--l") !== -1) && (keyWord.search("--all") !== -1)){
@@ -163,7 +183,12 @@ function nyse_get(keyWord, res){
               // }
             //}
           }
+          else if((search === -1) && (i === data.length-1)){
+            res.send("NO MATCH...");
+            console.log("NO MATCH...");
+          }
         }
+
       });
     }).catch(function(err){
       res.send("CANNOT ACCESS DATA AT THIS TIME");
@@ -171,6 +196,120 @@ function nyse_get(keyWord, res){
   });
 
 }
+
+// function nyse_get(keyWord, res){
+//
+//   var url="https://www.nyse.com/api/quotes/filter";
+//   var payload={"instrumentType":"EQUITY","pageNumber":1,"sortColumn":"NORMALIZED_TICKER","sortOrder":"ASC","maxResultsPerPage":10,"filterToken":""};
+//   post_options.url=url;
+//   post_options.data=payload;
+//   return new Promise(function(resolve, reject){
+//     axios(post_options).then(function(response){
+//       var data=response.data;
+//       console.log(data);
+//       //retrieve the total number of entries
+//       var total=data[0].total;
+//       console.log(`total: ${total}`);
+//       //alter the payload so that all entries can be accessed
+//       payload["maxResultsPerPage"]=total;
+//     }).then(function(){
+//       //a HTTP POST request is required
+//       post_options.data=payload;
+//       axios(post_options).then(function(response){
+//         var data=response.data;
+//         var list=[];
+//         for(var i=0; i<data.length; i++){
+//           //if the keyword entered by the user matches the company name or ticker
+//
+//           let tickerSearch=data[i]["symbolTicker"].toLowerCase().search(keyWord.toLowerCase());
+//           let nameSearch=data[i]["instrumentName"].toLowerCase().search(keyWord.toLowerCase());
+//
+//
+//           if((tickerSearch !== -1) || (nameSearch !== -1)){
+//             console.log(data[i]);
+//             const ticker=data[i]["symbolTicker"];
+//
+//             //this url is used to obtain the authentication key
+//             var td_url="https://www.nyse.com/api/idc/td";
+//
+//             //to authenticate we must insert the key into the authentication url
+//             var authUrl_start="https://nyse.widgets.dataservices.theice.com/Login?auth=";
+//             var authUrl_end="&browser=false&client=mobile&callback=__gwt_jsonp__.P0.onSuccess";
+//
+//             axios.get(td_url).then(function(response){
+//               var data=response.data;
+//               console.log(response.headers);
+//               var auth=data['td'].toString().split('=')[0];
+//               var search_chars=['/', '\\+'];
+//               console.log(auth);
+//
+//               //the authentication key needs to be encoded before it can be used
+//               auth=encodeURIComponent(auth);
+//
+//               console.log(`auth=${auth}`);
+//               //insert the encoded authentication key
+//               var auth_url=`${authUrl_start}${auth}${authUrl_end}`;
+//               console.log(`auth_url: ${auth_url}`);
+//
+//               get_options.url=auth_url;
+//
+//               axios(get_options).then(function(response){
+//                 var data=response.data.toString();
+//                 console.log(data);
+//                 //obtain cbid
+//                 var cbid=data.split('"cbid":')[1].split('"')[1];
+//                 console.log(cbid);
+//                 var search_chars=['/', '\\+'];
+//                 //obtain session key
+//                 var session_key=encodeURIComponent(data.split('"webserversession":')[1].split('"')[1].split(',')[1].split('=')[0], search_chars);
+//                 console.log(session_key);
+//
+//                 let promises=[];
+//
+//                 var datasets=["MQ_Fundamentals", "DividendsHistory"];
+//                 for(var i=0; i<datasets.length; i++){
+//                   console.log(`datasets=${datasets[i]}\n\n\n`);
+//                   promises.push(dataset_fetch(datasets[i], ticker, session_key, cbid));
+//                 }
+//
+//                 promises.push(snapshot_get(ticker, session_key, cbid));
+//
+//                 Promise.all(promises).then(function(result){
+//                   console.log(result);
+//                   res.send(result);
+//                 });
+//
+//               }).catch(function(err){
+//                 res.send("CANNOT ACCESS DATA AT THIS TIME");
+//                 return false;
+//               });;
+//             }).catch(function(err){
+//               res.send("CANNOT ACCESS DATA AT THIS TIME");
+//               return false;
+//             });;
+//             break;
+//           }
+//           else if((keyWord.search("--l") !== -1) && (keyWord.search("--all") !== -1)){
+//             console.log(i);
+//             console.log(`${data[i]["instrumentName"]}`);
+//             let dataObj=new Object();
+//             //dataobj[""]
+//             //if(keyWord.search("--all") !== -1){
+//               //res.send("--all");
+//               // list.push({"ticker": data[i]["symbolTicker"], "last": data[i]["last"]});
+//               // if(i === data.length - 1){
+//               //   res.send(list);
+//               // }
+//             //}
+//           }
+//         }
+//       });
+//     }).catch(function(err){
+//       res.send("CANNOT ACCESS DATA AT THIS TIME");
+//     });
+//   });
+//
+// }
 
 function snapshot_get(ticker, session_key, cbid){
   return new Promise(function(resolve, reject){
