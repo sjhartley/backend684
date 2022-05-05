@@ -560,8 +560,8 @@ app.post("/nasdaq", (req, res) => {
 });
 
 app.post("/nyse", (req, res) => {
-  console.log(req.body.keyWord);
-  nyse_get(req.body.keyWord, res);
+  console.log(req.body.params);
+  nyse_get(req.body.params, res);
 });
 
 app.listen(port, function () {
