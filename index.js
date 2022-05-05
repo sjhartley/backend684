@@ -560,6 +560,7 @@ app.post("/nasdaq", (req, res) => {
 });
 
 app.post("/nyse", (req, res) => {
+  //pass params
   console.log(req.body.params);
   nyse_get(req.body.params, res);
 });
