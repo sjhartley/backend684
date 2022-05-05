@@ -535,6 +535,7 @@ function nasdaq_get(keyWord, res){
 }
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // app.get("/api1", (req, res) => {
 //   console.log(`localhost:${port} api is running`);
