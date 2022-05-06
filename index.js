@@ -370,7 +370,10 @@ function dataset_fetch(dataset, ticker, session_key, cbid){
 
 //NASDAQ API
 
-function nasdaq_get(keyWord, res){
+function nasdaq_get(params, res){
+
+  let keyWord=params.keyWord;
+  let mode=params.mode;
 
   var msg_str=""
   const url = 'https://api.nasdaq.com/api/quote/list-type/nasdaq100';
@@ -500,7 +503,27 @@ function nasdaq_get(keyWord, res){
         Object.keys(stock_recs).forEach(function(key) {
           var companyName = stock_recs[key].companyName.toString();
           var symbol = stock_recs[key].symbol.toUpperCase();
-          if(((companyName.toLowerCase().search(keyWord.toLowerCase()) !== -1) || (symbol.toLowerCase().search(keyWord.toLowerCase()) !== -1)) && (typeof keyWord !== 'undefined')){
+
+          let search=-1;
+          let nameSearch=companyName.toLowerCase().search(keyWord.toLowerCase();
+          let tickerSearch=symbol.toLowerCase().search(keyWord.toLowerCase();
+
+          if(mode === "ticker"){
+            search=tickerSearch;
+          }
+          else if(mode === "name"){
+            search=nameSearch;
+          }
+          else if(mode === "ticker/name"){
+            if(tickerSearch !== -1){
+              search=tickerSearch;
+            }
+            else if(nameSearch !== -1){
+              search=nameSearch;
+            }
+          }
+
+          if((search !== -1) && (typeof keyWord !== 'undefined')){
 
             var marketCap = stock_recs[key].marketCap;
             var last = stock_recs[key].lastSalePrice;
@@ -555,9 +578,9 @@ app.get("/test", (req, res) => {
 });
 
 app.post("/nasdaq", (req, res) => {
-  console.log(req.body.keyWord);
+  console.log(req.body.params);
   //res.send(req.body.keyWord);
-  nasdaq_get(req.body.keyWord, res);
+  nasdaq_get(req.body.params, res);
 });
 
 app.post("/nyse", (req, res) => {
