@@ -96,7 +96,7 @@ function nyse_get(params, res){
           else if(mode === "name"){
             search=nameSearch;
           }
-          else if(mode === "both"){
+          else if(mode === "ticker/name"){
             if(tickerSearch !== -1){
               search=tickerSearch;
             }
