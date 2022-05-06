@@ -503,27 +503,8 @@ function nasdaq_get(params, res){
         Object.keys(stock_recs).forEach(function(key) {
           var companyName = stock_recs[key].companyName.toString();
           var symbol = stock_recs[key].symbol.toUpperCase();
-
-          let search=-1;
-          let nameSearch=companyName.toLowerCase().search(keyWord.toLowerCase();
-          let tickerSearch=symbol.toLowerCase().search(keyWord.toLowerCase();
-
-          if(mode === "ticker"){
-            search=tickerSearch;
-          }
-          else if(mode === "name"){
-            search=nameSearch;
-          }
-          else if(mode === "ticker/name"){
-            if(tickerSearch !== -1){
-              search=tickerSearch;
-            }
-            else if(nameSearch !== -1){
-              search=nameSearch;
-            }
-          }
-
-          if((search !== -1) && (typeof keyWord !== 'undefined')){
+          
+          if(((companyName.toLowerCase().search(keyWord.toLowerCase()) !== -1) || (symbol.toLowerCase().search(keyWord.toLowerCase()) !== -1)) && (typeof keyWord !== 'undefined')){
 
             var marketCap = stock_recs[key].marketCap;
             var last = stock_recs[key].lastSalePrice;
