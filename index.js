@@ -184,7 +184,7 @@ function nyse_get(params, res){
             //}
           }
           else if((search === -1) && (i === data.length-1)){
-            res.send("NO MATCH...");
+            res.send(null, null ,null);
             console.log("NO MATCH...");
           }
         }
