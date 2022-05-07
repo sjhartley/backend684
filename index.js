@@ -449,12 +449,12 @@ function nasdaq_get(params, res){
         console.log(msg_str);
       }
       else{
-        res.send(false);
+        res.send(null);
         return false;
       }
     }).catch(function(err){
       console.log(err);
-      res.send(false);
+      res.send(null);
     });
   }
   else if(keyWord.toLowerCase().search("help") !== -1){
@@ -487,7 +487,7 @@ function nasdaq_get(params, res){
       //res.send(info_str);
     }).catch(function(err){
       console.log(`Error: ${err}`);
-      res.send(false);
+      res.send(null);
     })
   }
   else{
@@ -549,7 +549,7 @@ function nasdaq_get(params, res){
         res.send(null);
       }
       else{
-        res.send(false);
+        res.send(null);
         return false;
       }
     }).catch(function(err){
