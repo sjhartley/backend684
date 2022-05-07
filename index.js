@@ -539,7 +539,7 @@ function nasdaq_get(params, res){
             dataObj["netChange"]=netChange;
             dataObj["percenChange"]=percenChange;
             arr.push(dataObj);
-
+            //
             msg_str=`${line_generator('*', 50)}\n\nSource: ${url}\n\nSymbol: ${symbol}\n\nName: ${companyName}\n\nMarket Cap: ${marketCap}\n\nLast sale price: ${last}\n\nNet change: ${netChange}\n\nPercentage change: ${percenChange}`;
             console.log(msg_str);
             res.send(arr);
