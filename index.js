@@ -505,8 +505,8 @@ function nasdaq_get(params, res){
           var symbol = stock_recs[key].symbol.toUpperCase();
 
           let search=-1;
-          let nameSearch=companyName.toLowerCase().search(keyWord.toLowerCase();
-          let tickerSearch=symbol.toLowerCase().search(keyWord.toLowerCase();
+          let nameSearch=companyName.toLowerCase().search(keyWord.toLowerCase());
+          let tickerSearch=symbol.toLowerCase().search(keyWord.toLowerCase());
 
           if(mode === "ticker"){
             search=tickerSearch;
