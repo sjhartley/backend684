@@ -546,7 +546,9 @@ function nasdaq_get(params, res){
             return false;
           }
         });
+        console.log("sending null...");
         res.send(null);
+
       }
       else{
         res.send(null);
