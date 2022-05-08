@@ -161,11 +161,11 @@ function nyse_get(params, res){
                 });
 
               }).catch(function(err){
-                res.send("CANNOT ACCESS DATA AT THIS TIME");
+                res.send(false);
                 return false;
               });
             }).catch(function(err){
-              res.send("CANNOT ACCESS DATA AT THIS TIME");
+              res.send(false);
               return false;
             });
             break;
@@ -184,14 +184,14 @@ function nyse_get(params, res){
             //}
           }
           else if((search === -1) && (i === data.length-1)){
-            res.send(null, null ,null);
+            res.send(false, false, false);
             console.log("NO MATCH...");
           }
         }
 
       });
     }).catch(function(err){
-      res.send("CANNOT ACCESS DATA AT THIS TIME");
+      res.send(false);
     });
   });
 
