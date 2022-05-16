@@ -99,7 +99,7 @@ function nyse_get(params, res){
                 search=1;
               }
               else if(resultFilter === "including"){
-                search=tickerSearch;
+                search=tickerSearch_includes;
               }
             }
             else if(mode === "name"){
@@ -107,7 +107,7 @@ function nyse_get(params, res){
                 search=1;
               }
               else if(resultFilter === "including"){
-                search=nameSearch;
+                search=nameSearch_includes;
               }
             }
             else if(mode === "ticker/name"){
@@ -121,10 +121,10 @@ function nyse_get(params, res){
                 }
                 else if(resultFilter === "including"){
                   if(tickerSearch !== -1){
-                    search=tickerSearch;
+                    search=tickerSearch_includes;
                   }
                   else if(nameSearch !== -1){
-                    search=nameSearch;
+                    search=nameSearch_includes;
                   }
                 }
             }
