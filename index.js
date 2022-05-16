@@ -95,23 +95,23 @@ function nyse_get(params, res){
 
 
             if(mode === "ticker"){
-              if((filter === "equals") && (tickerSearch_equals)){
+              if((resultFilter === "equals") && (tickerSearch_equals)){
                 search=1;
               }
-              else if(filter === "including"){
+              else if(resultFilter === "including"){
                 search=tickerSearch;
               }
             }
             else if(mode === "name"){
-              if((filter === "equals") && (nameSearch_equals)){
+              if((resultFilter === "equals") && (nameSearch_equals)){
                 search=1;
               }
-              else if(filter === "including"){
+              else if(resultFilter === "including"){
                 search=nameSearch;
               }
             }
             else if(mode === "ticker/name"){
-                if(filter === "equals"){
+                if(resultFilter === "equals"){
                   if(tickerSearch_equals){
                     search=1;
                   }
@@ -119,7 +119,7 @@ function nyse_get(params, res){
                     search=1;
                   }
                 }
-                else if(filter === "including"){
+                else if(resultFilter === "including"){
                   if(tickerSearch !== -1){
                     search=tickerSearch;
                   }
