@@ -533,8 +533,8 @@ function nasdaq_get(params, res){
 
           let search=-1;
 
-          let tickerSearch_includes=companyName.toLowerCase().search(keyWord.toLowerCase());
-          let nameSearch_includes=symbol.toLowerCase().search(keyWord.toLowerCase());
+          let tickerSearch_includes=symbol.toLowerCase().search(keyWord.toLowerCase());
+          let nameSearch_includes=companyName.toLowerCase().search(keyWord.toLowerCase());
           let tickerSearch_equals=(keyWord.toLowerCase() === companyName.toLowerCase());
           let nameSearch_equals=(keyWord.toLowerCase() === symbol.toLowerCase());
           console.log(`tickerSearch_includes=${tickerSearch_includes}`);
