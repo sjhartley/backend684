@@ -544,22 +544,22 @@ function nasdaq_get(params, res){
           // let nameSearch=companyName.toLowerCase().search(keyWord.toLowerCase());
           // let tickerSearch=symbol.toLowerCase().search(keyWord.toLowerCase());
           //
-          // if(mode === "ticker"){
-          //   search=tickerSearch;
-          // }
-          // else if(mode === "name"){
-          //   search=nameSearch;
-          // }
-          // else if(mode === "ticker/name"){
-          //   if(tickerSearch !== -1){
-          //     search=tickerSearch;
-          //   }
-          //   else if(nameSearch !== -1){
-          //     search=nameSearch;
-          //   }
-          // }
+          if(mode === "ticker"){
+            search=tickerSearch;
+          }
+          else if(mode === "name"){
+            search=nameSearch;
+          }
+          else if(mode === "ticker/name"){
+            if(tickerSearch !== -1){
+              search=tickerSearch;
+            }
+            else if(nameSearch !== -1){
+              search=nameSearch;
+            }
+          }
 
-          if((nameSearch_includes !== -1) || (tickerSearch_includes !== -1)){
+          if(search !== -1){
 
             var marketCap = stock_recs[key].marketCap;
             var last = stock_recs[key].lastSalePrice;
