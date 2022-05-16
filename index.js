@@ -537,26 +537,62 @@ function nasdaq_get(params, res){
           let nameSearch_includes=companyName.toLowerCase().search(keyWord.toLowerCase());
           let tickerSearch_equals=(keyWord.toLowerCase() === companyName.toLowerCase());
           let nameSearch_equals=(keyWord.toLowerCase() === symbol.toLowerCase());
-          console.log(`tickerSearch_includes=${tickerSearch_includes}`);
+          console.log(symbol);
+          console.log(tickerSearch_includes, nameSearch_includes, tickerSearch_equals, nameSearch_equals);
           //console.log(`nameSearch_includes`)
 
 
           // let nameSearch=companyName.toLowerCase().search(keyWord.toLowerCase());
           // let tickerSearch=symbol.toLowerCase().search(keyWord.toLowerCase());
           //
+          // if(mode === "ticker"){
+          //   search=tickerSearch_includes;
+          // }
+          // else if(mode === "name"){
+          //   search=nameSearch_includes;
+          // }
+          // else if(mode === "ticker/name"){
+          //   if(tickerSearch_includes !== -1){
+          //     search=tickerSearch_includes;
+          //   }
+          //   else if(nameSearch_includes !== -1){
+          //     search=nameSearch_includes;
+          //   }
+          // }
+
           if(mode === "ticker"){
-            search=tickerSearch_includes;
-          }
-          else if(mode === "name"){
-            search=nameSearch_includes;
-          }
-          else if(mode === "ticker/name"){
-            if(tickerSearch_includes !== -1){
+            if((resultFilter === "equals") && (tickerSearch_equals)){
+              search=1;
+            }
+            else if(resultFilter === "including"){
               search=tickerSearch_includes;
             }
-            else if(nameSearch_includes !== -1){
+          }
+          else if(mode === "name"){
+            if((resultFilter === "equals") && (nameSearch_equals)){
+              search=1;
+            }
+            else if(resultFilter === "including"){
               search=nameSearch_includes;
             }
+          }
+          else if(mode === "ticker/name"){
+              if(resultFilter === "equals"){
+                if(tickerSearch_equals){
+                  search=1;
+                }
+                else if(nameSearch_equals){
+                  search=1;
+                }
+              }
+              else if(resultFilter === "including"){
+                if(tickerSearch_includes !== -1){
+                  search=tickerSearch_includes;
+                }
+                else if(nameSearch_includes !== -1){
+                  search=nameSearch_includes;
+                }
+              }
           }
 
           if(search !== -1){
