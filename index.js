@@ -120,10 +120,10 @@ function nyse_get(params, res){
                   }
                 }
                 else if(resultFilter === "including"){
-                  if(tickerSearch !== -1){
+                  if(tickerSearch_includes !== -1){
                     search=tickerSearch_includes;
                   }
-                  else if(nameSearch !== -1){
+                  else if(nameSearch_includes !== -1){
                     search=nameSearch_includes;
                   }
                 }
@@ -566,10 +566,10 @@ function nasdaq_get(params, res){
                   }
                 }
                 else if(resultFilter === "including"){
-                  if(tickerSearch !== -1){
+                  if(tickerSearch_includes !== -1){
                     search=tickerSearch_includes;
                   }
-                  else if(nameSearch !== -1){
+                  else if(nameSearch_includes !== -1){
                     search=nameSearch_includes;
                   }
                 }
