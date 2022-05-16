@@ -95,7 +95,7 @@ function nyse_get(params, res){
 
 
             if(mode === "ticker"){
-              if((filter === "equals") && (tickerSearch_equals){
+              if((filter === "equals") && (tickerSearch_equals)){
                 search=1;
               }
               else if(filter === "including"){
@@ -103,7 +103,7 @@ function nyse_get(params, res){
               }
             }
             else if(mode === "name"){
-              if((filter === "equals") && (nameSearch_equals){
+              if((filter === "equals") && (nameSearch_equals)){
                 search=1;
               }
               else if(filter === "including"){
