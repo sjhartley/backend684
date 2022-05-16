@@ -401,7 +401,6 @@ function nasdaq_get(params, res){
   let keyWord=params.keyWord;
   let mode=params.mode;
   let resultFilter=params.filter;
-  console.log(`keyWord=${}`)
 
   var msg_str=""
   const url = 'https://api.nasdaq.com/api/quote/list-type/nasdaq100';
