@@ -63,6 +63,7 @@ function nyse_get(params, res){
   console.log(params);
   let keyWord=params.keyWord;
   let mode=params.mode;
+  let resultFilter=params.filter;
 
   var url="https://www.nyse.com/api/quotes/filter";
   var payload={"instrumentType":"EQUITY","pageNumber":1,"sortColumn":"NORMALIZED_TICKER","sortOrder":"ASC","maxResultsPerPage":10,"filterToken":""};
@@ -87,23 +88,48 @@ function nyse_get(params, res){
           //if the keyword entered by the user matches the company name or ticker
 
           let search=-1;
-          let tickerSearch=data[i]["symbolTicker"].toLowerCase().search(keyWord.toLowerCase());
-          let nameSearch=data[i]["instrumentName"].toLowerCase().search(keyWord.toLowerCase());
+          let tickerSearch_includes=data[i]["symbolTicker"].toLowerCase().search(keyWord.toLowerCase());
+          let nameSearch_includes=data[i]["instrumentName"].toLowerCase().search(keyWord.toLowerCase());
+          let tickerSearch_equals=(keyWord.toLowerCase() === data[i]["symbolTicker"].toLowerCase());
+          let nameSearch_equals=(keyWord.toLowerCase() === data[i]["instrumentName"].toLowerCase());
 
-          if(mode === "ticker"){
-            search=tickerSearch;
-          }
-          else if(mode === "name"){
-            search=nameSearch;
-          }
-          else if(mode === "ticker/name"){
-            if(tickerSearch !== -1){
-              search=tickerSearch;
+
+            if(mode === "ticker"){
+              if((filter === "equals") && (tickerSearch_equals){
+                search=1;
+              }
+              else if(filter === "including"){
+                search=tickerSearch;
+              }
             }
-            else if(nameSearch !== -1){
-              search=nameSearch;
+            else if(mode === "name"){
+              if((filter === "equals") && (nameSearch_equals){
+                search=1;
+              }
+              else if(filter === "including"){
+                search=nameSearch;
+              }
+            }
+            else if(mode === "ticker/name"){
+                if(filter === "equals"){
+                  if(tickerSearch_equals){
+                    search=1;
+                  }
+                  else if(nameSearch_equals){
+                    search=1;
+                  }
+                }
+                else if(filter === "including"){
+                  if(tickerSearch !== -1){
+                    search=tickerSearch;
+                  }
+                  else if(nameSearch !== -1){
+                    search=nameSearch;
+                  }
+                }
             }
           }
+
 
 
           if(search !== -1){
