@@ -540,40 +540,6 @@ function nasdaq_get(params, res){
           console.log(`tickerSearch_includes=${tickerSearch_includes}`);
           //console.log(`nameSearch_includes`)
 
-            if(mode === "ticker"){
-              if((resultFilter === "equals") && (tickerSearch_equals)){
-                search=1;
-              }
-              else if(resultFilter === "including"){
-                search=tickerSearch_includes;
-              }
-            }
-            else if(mode === "name"){
-              if((resultFilter === "equals") && (nameSearch_equals)){
-                search=1;
-              }
-              else if(resultFilter === "including"){
-                search=nameSearch_includes;
-              }
-            }
-            else if(mode === "ticker/name"){
-                if(resultFilter === "equals"){
-                  if(tickerSearch_equals){
-                    search=1;
-                  }
-                  else if(nameSearch_equals){
-                    search=1;
-                  }
-                }
-                else if(resultFilter === "including"){
-                  if(tickerSearch_includes !== -1){
-                    search=tickerSearch_includes;
-                  }
-                  else if(nameSearch_includes !== -1){
-                    search=nameSearch_includes;
-                  }
-                }
-            }
 
           // let nameSearch=companyName.toLowerCase().search(keyWord.toLowerCase());
           // let tickerSearch=symbol.toLowerCase().search(keyWord.toLowerCase());
@@ -593,7 +559,7 @@ function nasdaq_get(params, res){
           //   }
           // }
 
-          if((search !== -1) && (typeof keyWord !== 'undefined')){
+          if((nameSearch_includes !== -1) || (tickerSearch_includes !== -1)){
 
             var marketCap = stock_recs[key].marketCap;
             var last = stock_recs[key].lastSalePrice;
