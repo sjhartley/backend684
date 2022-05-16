@@ -545,17 +545,17 @@ function nasdaq_get(params, res){
           // let tickerSearch=symbol.toLowerCase().search(keyWord.toLowerCase());
           //
           if(mode === "ticker"){
-            search=tickerSearch;
+            search=tickerSearch_includes;
           }
           else if(mode === "name"){
-            search=nameSearch;
+            search=nameSearch_includes;
           }
           else if(mode === "ticker/name"){
             if(tickerSearch !== -1){
-              search=tickerSearch;
+              search=tickerSearch_includes;
             }
             else if(nameSearch !== -1){
-              search=nameSearch;
+              search=nameSearch_includes;
             }
           }
 
