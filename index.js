@@ -58,10 +58,7 @@ function tag_remover(str){
 
 //NYSE API
 
-function nyse_get(params, res){
-
-  console.log(params);
-  let keyWord=params.keyWord;
+function nyse_get(keyWord, res){
 
   var url="https://www.nyse.com/api/quotes/filter";
   var payload={"instrumentType":"EQUITY","pageNumber":1,"sortColumn":"NORMALIZED_TICKER","sortOrder":"ASC","maxResultsPerPage":10,"filterToken":""};
@@ -85,7 +82,6 @@ function nyse_get(params, res){
         for(var i=0; i<data.length; i++){
           //if the keyword entered by the user matches the company name or ticker
 
-          let search=-1;
           let tickerSearch=data[i]["symbolTicker"].toLowerCase().search(keyWord.toLowerCase());
           let nameSearch=data[i]["instrumentName"].toLowerCase().search(keyWord.toLowerCase());
 
@@ -353,10 +349,7 @@ function dataset_fetch(dataset, ticker, session_key, cbid){
 
 //NASDAQ API
 
-function nasdaq_get(params, res){
-
-  let keyWord=params.keyWord;
-  let mode=params.mode;
+function nasdaq_get(keyWord, res){
 
   var msg_str=""
   const url = 'https://api.nasdaq.com/api/quote/list-type/nasdaq100';
@@ -487,26 +480,10 @@ function nasdaq_get(params, res){
           var companyName = stock_recs[key].companyName.toString();
           var symbol = stock_recs[key].symbol.toUpperCase();
 
-          let search=-1;
           let nameSearch=companyName.toLowerCase().search(keyWord.toLowerCase());
           let tickerSearch=symbol.toLowerCase().search(keyWord.toLowerCase());
 
-          if(mode === "ticker"){
-            search=tickerSearch;
-          }
-          else if(mode === "name"){
-            search=nameSearch;
-          }
-          else if(mode === "ticker/name"){
-            if(tickerSearch !== -1){
-              search=tickerSearch;
-            }
-            else if(nameSearch !== -1){
-              search=nameSearch;
-            }
-          }
-
-          if((search !== -1) && (typeof keyWord !== 'undefined')){
+          if((nameSearch !== -1) && (tickerSearch !== -1) && (typeof keyWord !== 'undefined')){
 
             var marketCap = stock_recs[key].marketCap;
             var last = stock_recs[key].lastSalePrice;
