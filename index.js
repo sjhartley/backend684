@@ -400,6 +400,7 @@ function nasdaq_get(params, res){
 
   let keyWord=params.keyWord;
   let mode=params.mode;
+  let resultFilter=params.filter;
 
   var msg_str=""
   const url = 'https://api.nasdaq.com/api/quote/list-type/nasdaq100';
@@ -531,23 +532,65 @@ function nasdaq_get(params, res){
           var symbol = stock_recs[key].symbol.toUpperCase();
 
           let search=-1;
-          let nameSearch=companyName.toLowerCase().search(keyWord.toLowerCase());
-          let tickerSearch=symbol.toLowerCase().search(keyWord.toLowerCase());
 
-          if(mode === "ticker"){
-            search=tickerSearch;
-          }
-          else if(mode === "name"){
-            search=nameSearch;
-          }
-          else if(mode === "ticker/name"){
-            if(tickerSearch !== -1){
-              search=tickerSearch;
+          let tickerSearch_includes=companyName.toLowerCase().search(keyWord.toLowerCase();
+          let nameSearch_includes=symbol.toLowerCase().search(keyWord.toLowerCase());
+          let tickerSearch_equals=(keyWord.toLowerCase() === companyName.toLowerCase());
+          let nameSearch_equals=(keyWord.toLowerCase() === symbol.toLowerCase());
+
+
+            if(mode === "ticker"){
+              if((resultFilter === "equals") && (tickerSearch_equals)){
+                search=1;
+              }
+              else if(resultFilter === "including"){
+                search=tickerSearch_includes;
+              }
             }
-            else if(nameSearch !== -1){
-              search=nameSearch;
+            else if(mode === "name"){
+              if((resultFilter === "equals") && (nameSearch_equals)){
+                search=1;
+              }
+              else if(resultFilter === "including"){
+                search=nameSearch_includes;
+              }
             }
-          }
+            else if(mode === "ticker/name"){
+                if(resultFilter === "equals"){
+                  if(tickerSearch_equals){
+                    search=1;
+                  }
+                  else if(nameSearch_equals){
+                    search=1;
+                  }
+                }
+                else if(resultFilter === "including"){
+                  if(tickerSearch !== -1){
+                    search=tickerSearch_includes;
+                  }
+                  else if(nameSearch !== -1){
+                    search=nameSearch_includes;
+                  }
+                }
+            }
+
+          // let nameSearch=companyName.toLowerCase().search(keyWord.toLowerCase());
+          // let tickerSearch=symbol.toLowerCase().search(keyWord.toLowerCase());
+          //
+          // if(mode === "ticker"){
+          //   search=tickerSearch;
+          // }
+          // else if(mode === "name"){
+          //   search=nameSearch;
+          // }
+          // else if(mode === "ticker/name"){
+          //   if(tickerSearch !== -1){
+          //     search=tickerSearch;
+          //   }
+          //   else if(nameSearch !== -1){
+          //     search=nameSearch;
+          //   }
+          // }
 
           if((search !== -1) && (typeof keyWord !== 'undefined')){
 
