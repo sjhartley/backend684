@@ -128,7 +128,7 @@ function nyse_get(params, res){
                   }
                 }
             }
-          }
+
 
 
 
