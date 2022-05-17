@@ -562,7 +562,7 @@ function nasdaq_get(params, res){
 
           if(mode === "ticker"){
             if((resultFilter === "equals") && (tickerSearch_equals)){
-              console.log("resultFilter === equals and tickerSearch_equals ")
+              console.log("resultFilter === equals and tickerSearch_equals ");
               search=1;
             }
             else if(resultFilter === "including"){
