@@ -173,11 +173,11 @@ function nyse_get(params, res){
 
                 let promises=[];
 
-                // var datasets=["MQ_Fundamentals", "DividendsHistory"];
-                // for(var i=0; i<datasets.length; i++){
-                //   console.log(`datasets=${datasets[i]}\n\n\n`);
-                //   promises.push(dataset_fetch(datasets[i], ticker, session_key, cbid));
-                // }
+                var datasets=["MQ_Fundamentals", "DividendsHistory"];
+                for(var i=0; i<datasets.length; i++){
+                  console.log(`datasets=${datasets[i]}\n\n\n`);
+                  promises.push(dataset_fetch(datasets[i], ticker, session_key, cbid));
+                }
 
                 promises.push(snapshot_get(ticker, session_key, cbid));
 
