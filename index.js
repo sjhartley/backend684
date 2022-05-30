@@ -489,10 +489,11 @@ function nasdaq_get(params, res){
     res.send(help_Str);
   }
   else if(keyWord.toLowerCase().search("market-info") !== -1){
+    console.log("retrieving market info...");
     options.url="https://api.nasdaq.com/api/market-info";
     axios(options).then(function(response){
       var body=response.data;
-      //console.log(body.data);
+      console.log(body.data);
 
       //var info_str="";
       //let arr=[];
