@@ -637,7 +637,7 @@ function nasdaq_get(params, res){
 function crypto_get(params, res){
   let keyWord=params.keyWord;
 
-  let url="https://api.nasdaq.com/api/autocomplete/slookup/10?search=b";
+  let url=`https://api.nasdaq.com/api/autocomplete/slookup/10?search=${keyWord}`;
   axios.get(url).then(function(response){
     console.log(response.data.data[0]);
     let entry=response.data.data[0];
@@ -647,10 +647,10 @@ function crypto_get(params, res){
 
     let url1=`https://api.nasdaq.com/api/quote/${entry.symbol}/info?assetclass=${asset}`;
     console.log(url1);
-  axios.get(url1).then(function(response){
+    axios.get(url1).then(function(response){
     console.log(response.data);
+    });
   });
-});
 }
 
 app.use(bodyParser.urlencoded({ extended: false }));
