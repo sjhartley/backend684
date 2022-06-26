@@ -667,9 +667,10 @@ function crypto_get(params, res){
 
       let url1=`https://api.nasdaq.com/api/quote/${symbol}/info?assetclass=${asset}`;
       console.log(url1);
-      axios.get(url1).then(function(response){
+      options.url=url1;
+      axios(options).then(function(response){
         console.log(response.data);
-        //res.send(response.data);
+        res.send(response.data);
       }).catch(function(err){
         console.log(err);
         res.send(false);
