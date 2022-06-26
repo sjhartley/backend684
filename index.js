@@ -636,22 +636,47 @@ function nasdaq_get(params, res){
 
 function crypto_get(params, res){
   let keyWord=params.keyWord;
+  var options={
+    method: "get",
+    headers: {
+      "Host": "api.nasdaq.com",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0",
+      "Accept": "application/json, text/plain, */*",
+      "Accept-Language": "en-GB,en;q=0.5",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Referer": "https://www.nasdaq.com/",
+      "Origin": "https://www.nasdaq.com",
+      "Connection": "keep-alive",
+      "Sec-Fetch-Dest": "empty",
+      "Sec-Fetch-Mode": "cors",
+      "Sec-Fetch-Site": "same-site",
+      "Sec-GPC": 1,
+      "Cache-Control": "max-age=0"
+    }
+  };
 
   if(keyWord !== null){
     let url=`https://api.nasdaq.com/api/autocomplete/slookup/10?search=${keyWord}`;
-    axios.get(url).then(function(response){
+    options.url=url;
+    axios(options).then(function(response){
       console.log(response.data.data[0]);
       let entry=response.data.data[0];
       let symbol=entry.symbol;
       let asset=entry.asset.toLowerCase();
       console.log(symbol, asset);
 
-      let url1=`https://api.nasdaq.com/api/quote/${entry.symbol}/info?assetclass=${asset}`;
+      let url1=`https://api.nasdaq.com/api/quote/${symbol}/info?assetclass=${asset}`;
       console.log(url1);
       axios.get(url1).then(function(response){
         console.log(response.data);
-        res.send(response.data);
+        //res.send(response.data);
+      }).catch(function(err){
+        console.log(err);
+        res.send(false);
       });
+    }).catch(function(err){
+      console.log(err);
+      res.send(false);
     });
   }
 }
