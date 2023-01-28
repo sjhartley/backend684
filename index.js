@@ -719,6 +719,40 @@ app.post("/crypto", (req, res) => {
   crypto_get(req.body.params, res);
 });
 
+app.post('/hist', function(req, res) {
+  console.log("starting...");
+  //let symbol="PM";
+  console.log(req.body.params);
+  let symbol=req.body.params.symbol;
+  var limit=200;
+
+  if(symbol !== null){
+    //let url=`https://api.nasdaq.com/api/quote/${symbol}/historical?assetclass=stocks&fromdate=2018-05-01&limit=18&todate=2018-07-01`;
+    let url=`https://api.nasdaq.com/api/quote/${symbol}/historical?assetclass=stocks&fromdate=2012-08-10&limit=${limit}&todate=2022-08-10`;
+    options.url=url;
+    axios(options).then(function(response){
+      let body=response.data;
+      console.log(body);
+      if(body != null){
+        if(body.data.totalRecords != null){
+          console.log("\n\n\n"+body.data.totalRecords);
+          limit=body.data.totalRecords;
+          url=`https://api.nasdaq.com/api/quote/${symbol}/historical?assetclass=stocks&fromdate=2012-08-10&limit=${limit}&todate=2022-08-10`;
+          axios.get(url).then(function(response){
+            body=response.data;
+            res.send(body);
+          });
+        }
+      }
+      else{
+        res.send("Err");
+      }
+    }).catch(function(err){
+        res.send("Err");
+    });
+  }
+});
+
 app.listen(port, function () {
   console.log(`server running at port: ${port}`);
 });
