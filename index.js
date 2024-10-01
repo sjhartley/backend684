@@ -725,10 +725,12 @@ app.post('/hist', function(req, res) {
   console.log(req.body.params);
   let symbol=req.body.params.symbol;
   var limit=200;
-
+  var date = new Date();  
+  const formattedDate = date.toISOString().slice(0, 10);
+  
   if(symbol !== null){
     //let url=`https://api.nasdaq.com/api/quote/${symbol}/historical?assetclass=stocks&fromdate=2018-05-01&limit=18&todate=2018-07-01`;
-    let url=`https://api.nasdaq.com/api/quote/${symbol}/historical?assetclass=stocks&fromdate=2012-08-10&limit=${limit}&todate=2022-08-10`;
+    let url = `https://api.nasdaq.com/api/quote/${symbol}/historical?assetclass=stocks&fromdate=2012-08-10&limit=${limit}&todate=${formattedDate}`;
     options.url=url;
     axios(options).then(function(response){
       let body=response.data;
@@ -737,7 +739,7 @@ app.post('/hist', function(req, res) {
         if(body.data.totalRecords != null){
           console.log("\n\n\n"+body.data.totalRecords);
           limit=body.data.totalRecords;
-          url=`https://api.nasdaq.com/api/quote/${symbol}/historical?assetclass=stocks&fromdate=2012-08-10&limit=${limit}&todate=2022-08-10`;
+          url=`https://api.nasdaq.com/api/quote/${symbol}/historical?assetclass=stocks&fromdate=2012-08-10&limit=${limit}&todate=${formattedDate}`;
           axios.get(url).then(function(response){
             body=response.data;
             res.send(body);
