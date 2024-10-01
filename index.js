@@ -721,7 +721,25 @@ app.post("/crypto", (req, res) => {
 
 app.post('/hist', function(req, res) {
   console.log("starting...");
-  //let symbol="PM";
+    //let symbol="PM";
+    var options = {
+        method: "get",
+        headers: {
+            "Host": "api.nasdaq.com",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0",
+            "Accept": "application/json, text/plain, */*",
+            "Accept-Language": "en-GB,en;q=0.5",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Referer": "https://www.nasdaq.com/",
+            "Origin": "https://www.nasdaq.com",
+            "Connection": "keep-alive",
+            "Sec-Fetch-Dest": "empty",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Site": "same-site",
+            "Sec-GPC": 1,
+            "Cache-Control": "max-age=0"
+        }
+    };
   console.log(req.body.params);
   let symbol=req.body.params.symbol;
   var limit=200;
@@ -731,6 +749,7 @@ app.post('/hist', function(req, res) {
   if(symbol !== null){
     //let url=`https://api.nasdaq.com/api/quote/${symbol}/historical?assetclass=stocks&fromdate=2018-05-01&limit=18&todate=2018-07-01`;
     let url = `https://api.nasdaq.com/api/quote/${symbol}/historical?assetclass=stocks&fromdate=2012-08-10&limit=${limit}&todate=${formattedDate}`;
+    console.log(url);
     options.url=url;
     axios(options).then(function(response){
       let body=response.data;
