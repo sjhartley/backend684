@@ -814,6 +814,34 @@ app.get("/logo/:ticker", async (req, res) => {
   res.send(Buffer.from(buffer));
 });
 
+app.get("/logos/:tickers", async (req, res) => {
+  try {
+    const tickers = req.params.tickers.split(","); // e.g., "AAPL,MSFT,GOOG"
+
+    // Fetch all logos in parallel
+    const logoBuffers = await Promise.all(
+      tickers.map(async (ticker) => {
+        const response = await fetch(
+          `https://img.logo.dev/ticker/${ticker}?token=${process.env.LOGO_DEV_KEY}`,
+        );
+        const buffer = await response.arrayBuffer();
+        return Buffer.from(buffer);
+      }),
+    );
+
+    // Return as base64 JSON so frontend can render images quickly
+    const logosBase64 = logoBuffers.map((buf) => buf.toString("base64"));
+
+    res.json({
+      tickers,
+      logos: logosBase64, // frontend can do <img src={`data:image/png;base64,${logos[i]}`}/>
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch logos" });
+  }
+});
+
 app.listen(port, function () {
   console.log(`server running at port: ${port}`);
 });
