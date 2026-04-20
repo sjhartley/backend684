@@ -788,7 +788,8 @@ app.post("/hist", function (req, res) {
             console.log("\n\n\n" + body.data.totalRecords);
             limit = body.data.totalRecords;
             url = `https://api.nasdaq.com/api/quote/${symbol}/historical?assetclass=stocks&fromdate=2012-08-10&limit=${limit}&todate=${formattedDate}`;
-            axios.get(url).then(function (response) {
+            options.url = url;
+            axios(options).then(function (response) {
               body = response.data;
               res.send(body);
             });
@@ -800,45 +801,6 @@ app.post("/hist", function (req, res) {
       .catch(function (err) {
         res.send("Err");
       });
-  }
-});
-
-app.get("/logo/:ticker", async (req, res) => {
-  const ticker = req.params.ticker;
-  const response = await fetch(
-    `https://img.logo.dev/ticker/${ticker}?token=${process.env.LOGO_DEV_KEY}`,
-  );
-
-  const buffer = await response.arrayBuffer();
-  res.set("Content-Type", "image/png");
-  res.send(Buffer.from(buffer));
-});
-
-app.get("/logos/:tickers", async (req, res) => {
-  try {
-    const tickers = req.params.tickers.split(","); // e.g., "AAPL,MSFT,GOOG"
-
-    // Fetch all logos in parallel
-    const logoBuffers = await Promise.all(
-      tickers.map(async (ticker) => {
-        const response = await fetch(
-          `https://img.logo.dev/ticker/${ticker}?token=${process.env.LOGO_DEV_KEY}`,
-        );
-        const buffer = await response.arrayBuffer();
-        return Buffer.from(buffer);
-      }),
-    );
-
-    // Return as base64 JSON so frontend can render images quickly
-    const logosBase64 = logoBuffers.map((buf) => buf.toString("base64"));
-
-    res.json({
-      tickers,
-      logos: logosBase64, // frontend can do <img src={`data:image/png;base64,${logos[i]}`}/>
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to fetch logos" });
   }
 });
 
